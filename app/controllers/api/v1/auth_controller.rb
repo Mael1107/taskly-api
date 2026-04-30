@@ -1,4 +1,5 @@
 class Api::V1::AuthController < ApplicationController
+  before_action :authorize_request, only: [:me]
   def register
     user = User.new(user_params)
 
@@ -27,6 +28,10 @@ class Api::V1::AuthController < ApplicationController
     else
       render json: { error: "Email or password invalids!" }, status: :unauthorized
     end
+  end
+
+  def me
+    render json: @current_user, only: [:id, :name, :email]
   end
 
   private
